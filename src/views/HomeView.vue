@@ -27,12 +27,15 @@ async function filterProduct(e){
   if (e.target.value === 'all') {
     await productStore.getAllProducts();
     allData.value = productStore.products.data;
+    totalPages.value = Math.ceil(allData.value?.length / limit);
+    currentPage.value = 1;
   } else {
     await productStore.getFilterProduct(e.target.value);
     allData.value = productStore.filteredProducts.data;
-    console.log("All Data:", allData.value);
+    totalPages.value = Math.ceil(allData.value?.length / limit);
+    currentPage.value = 1;
   }
-  PaginationFunction()
+  PaginationFunction(currentPage.value)
 }
 
 // Add To Cart
@@ -79,7 +82,8 @@ onMounted(async () => {
               <router-link to="/" class="text-lg uppercase font-semibold">Home</router-link>
               <div class="flex">
                   <select class="outline-none px-2 mr-2 rounded-md" @input="filterProduct">
-                      <option value="smartphones">all</option>
+                      <option selected>Select Category</option>
+                      <option value="all">All products</option>
                       <option value="smartphones">smartphones</option>
                       <option value="laptops">laptops</option>
                       <option value="fragrances">fragrances</option>
