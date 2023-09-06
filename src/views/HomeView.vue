@@ -24,8 +24,14 @@ let PaginationFunction = () => {
 
 //Fiter
 async function filterProduct(e){
-  await productStore.getFilterProduct(e.target.value);
-  allData.value = productStore.filteredProducts.data;
+  if (e.target.value === 'all') {
+    await productStore.getAllProducts();
+    allData.value = productStore.products.data;
+  } else {
+    await productStore.getFilterProduct(e.target.value);
+    allData.value = productStore.filteredProducts.data;
+    console.log("All Data:", allData.value);
+  }
   PaginationFunction()
 }
 
@@ -38,20 +44,18 @@ function addToCard(id){
     arr.push(data);
     cardLength.value = arr.length;
     localStorage.setItem('products', JSON.stringify(arr));
-    console.log(`${id} ID li element savatga qo'shildi.`);
   } else {
     const data = arr.filter(item => item.id !== id);
     localStorage.setItem('products', JSON.stringify(data))
     cardLength.value = data.length;
-    console.log(`${id} ID li element savatdan olib tashlandi.`);
   }
 }
 
 // Mounted
 onMounted(async () => {
   await productStore.getAllProducts();
-  totalPages.value = Math.ceil(allData.value?.length / limit);
   allData.value = productStore.products.data;
+  totalPages.value = Math.ceil(allData.value?.length / limit);
   PaginationFunction();
   const arr = JSON.parse(localStorage.getItem('products')) || [];
   cardLength.value = arr.length;
@@ -75,6 +79,7 @@ onMounted(async () => {
               <router-link to="/" class="text-lg uppercase font-semibold">Home</router-link>
               <div class="flex">
                   <select class="outline-none px-2 mr-2 rounded-md" @input="filterProduct">
+                      <option value="smartphones">all</option>
                       <option value="smartphones">smartphones</option>
                       <option value="laptops">laptops</option>
                       <option value="fragrances">fragrances</option>
@@ -94,7 +99,6 @@ onMounted(async () => {
       </header>
 
       <div  class="container">
-        <h1 class="text-center my-8 text-3xl font-bold text-pink-500 uppercase">All Products</h1>
         <div class="flex flex-wrap mt-8 mb-2">
           <div
             v-for="item in showData"

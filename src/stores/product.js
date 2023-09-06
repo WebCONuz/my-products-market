@@ -51,10 +51,8 @@ export const useProductStore = defineStore("products", {
     async getFilterProduct(product) {
       this.filteredProducts.loading = true;
       try {
-        console.log(product);
         const res = await fetch(`https://dummyjson.com/products/category/${product}`);
         const data = await res.json();
-        console.log(data.products);
         this.filteredProducts.data = data.products;
       } catch (error) {
         this.filteredProducts.error = error;
