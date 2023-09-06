@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Product card */
+.product-card{
+    width: calc(100% / 3 - 32px);
+    margin: 0 16px 32px 16px;
+}
+
+/* pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0 1rem 0;
+    margin-bottom: 32px;
+}
+.page-item {
+    margin: 0 2px;
+    cursor: pointer;
+}
+.page-item .page-link {
+    border-radius: 4px;
+    padding: 6px 14px;
+    border: 1px solid rgba(3, 201, 92, 0.634);
+    background-color: rgba(0, 128, 0, 0.068);
+    cursor: pointer;
+}
+.page-item.active .page-link {
+    border: 1px solid rgba(3, 201, 92, 0.804);
+    background-color: rgba(0, 128, 0, 0.162);
+}
+.page-item.disabled .page-link {
+    border: 1px solid #3333335e;
+    background-color: #33333338;
+}
